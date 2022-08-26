@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "test2": "mocha test/carbon-dating.test.js"
+    "test2": "mocha test/common-character-count.test.js"
   },
   "repository": {
     "type": "git",
