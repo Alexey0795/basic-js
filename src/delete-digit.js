@@ -13,7 +13,7 @@ function deleteDigit(n) {
   let maxval = 0;
   let str = `${n}`;
   let arr = str.split('');
-  for (let i = 0; i < arr.length - 1; i++) {
+  for (let i = 0; i < arr.length; i++) {
     let newarr = [...arr];
     newarr.splice(i, 1);
     let curnum = Number(newarr.join(''));
@@ -25,3 +25,5 @@ function deleteDigit(n) {
 module.exports = {
   deleteDigit
 };
+
+console.log(deleteDigit(10))
