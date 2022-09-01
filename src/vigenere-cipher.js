@@ -1,5 +1,3 @@
-const { NotImplementedError } = require('../extensions/index.js');
-
 /**
  * Implement class VigenereCipheringMachine that allows us to create
  * direct and reverse ciphering machines according to task description
@@ -20,50 +18,42 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-    constructor(mode = true) {
-        this.alf = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
-        this.dict = new Set(this.alf);
-        this.reverceMode = !mode;
+  constructor(isDirecrMode = true) {
+    this.alf = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    this.n = this.alf.length
+    this.isReverceMode = !isDirecrMode;
+  }
+
+  encrypt = (msg, key) => this.converte(msg, key, this.encryptChar)
+  decrypt = (msg, key) => this.converte(msg, key, this.decryptChar)
+
+  encryptChar = (k, m) => (m + k) % this.n
+  decryptChar = (k, m) => k > m ? this.n - (k - m) : m - k
+
+  converte = (msg, key, resolver) => {
+    if (msg === undefined || key === undefined) throw new Error('Incorrect arguments!')
+    msg = msg.toUpperCase();
+    key = key.toUpperCase();
+    let result = [msg.length];
+    let correctiveShiftForKey = 0;
+    for (let pos = 0; pos < msg.length; pos++) {
+      let charOfMsg = msg.charAt(pos);
+      let m = this.alf.indexOf(charOfMsg);
+      if (m != -1) {
+        let charOfKey = key.charAt((pos - correctiveShiftForKey) % key.length);
+        let k = this.alf.indexOf(charOfKey);
+        let charOfRes = this.alf.charAt(resolver(k, m));
+        result[pos] = charOfRes;
+      } else {
+        result[pos] = charOfMsg;
+        correctiveShiftForKey++;
+      }
     }
-
-    encrypt(txt, key) {
-        let msg = [];
-        let arrtxt = txt.split('');
-        let arrkey = key.split('');
-        let indx = 0;
-        for (indx; indx < txt.length; indx++) {
-            if (this.dict.has(arrtxt[indx])) {
-
-                let a = this.alf.indexOf(arrtxt[indx]);
-                let b = this.alf.indexOf(arrkey[indx % key.length]);
-                msg.push((a + b) % this.dict.length)
-            } else {
-                msg.push(arrtxt[indx]);
-            }
-        }
-        if (this.mode) msg.reverse();
-        msg.join('').toUpperCase();
-    }
-
-    decrypt(txt, key) {
-        let msg = [];
-        let arrtxt = txt.split('');
-        if (this.mode) arrtxt.reverse();
-        let arrkey = key.split('');
-        let indx = 0;
-        for (indx; indx < txt.length; indx++) {
-            if (this.dict.has(arrtxt[indx])) {
-                let a = this.alf.indexOf(arrtxt[indx]);
-                let b = this.alf.indexOf(arrkey[indx % key.length]);
-                msg.push((a - b) % this.dict.length)
-            } else {
-
-            }
-        }
-        msg.join().toUpperCase();
-    }
+    if (this.isReverceMode) result.reverse();
+    return result.join('').toUpperCase();
+  }
 }
 
 module.exports = {
-    VigenereCipheringMachine
+  VigenereCipheringMachine
 };
