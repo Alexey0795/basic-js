@@ -1,5 +1,3 @@
-const { NotImplementedError } = require('../extensions/index.js');
-
 /**
  * Create a repeating string based on the given parameters
  *  
@@ -16,9 +14,13 @@ const { NotImplementedError } = require('../extensions/index.js');
  *
  */
 function repeater(text, options) {
-    let arr = [options.repeatTimes];
-    arr.forEach(text);
-    return arr.join('+');
+    let concat = (elem, times, sep) => Array(times).fill(elem).join(sep)
+    let addition = options.addition === undefined ? '' : new String(options.addition).toString();
+    let textElement = new String(text).toString() +
+        concat(addition,
+            options.additionRepeatTimes || 1,
+            options.additionSeparator || '|')
+    return concat(textElement, options.repeatTimes || 1, options.separator || '+');
 }
 
 module.exports = {
