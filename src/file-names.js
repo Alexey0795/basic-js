@@ -31,5 +31,3 @@ function renameFiles(names) {
 module.exports = {
   renameFiles
 };
-
-console.dir(renameFiles(['doc', 'doc', 'image', 'doc(1)', 'doc']))
